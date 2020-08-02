@@ -1,45 +1,29 @@
-import { Hooks } from './hooks.js';
+import { Hook } from './hooks.js';
 
 export class Utils {
-	constructor() {
-		this._hooks = new Hooks();
-	}
-
 	addOptions() {
 		ig.lang.labels.sc.gui.options['dontResetTimerOnDeath'] = {name: 'Don\'t reset timer on death', description: 'Don\'t reset timer on death. \\c[1]WARNING: This will affect the actual IGT!'};
 		ig.lang.labels.sc.gui.options['printEvents'] = {name: 'Print all events', description: 'Print all possible events that can be split on. Use "Log level: Default"'};
 		ig.lang.labels.sc.gui.options.headers['ccTimer'] = 'CCTimer';
-
-		                     // arg0 - name 
-		sc.OPTIONS_DEFINITION['dontResetTimerOnDeath'] = {
-			// arg1 - type
-			type: 'CHECKBOX',
-			// arg2 - init
-			init: true,
-			// arg3 - category
-			cat: 0,
-			// arg4 - data
-			// arg5 - restart
-			restart: true,
-			// arg6 - header
+		sc.OPTIONS_DEFINITION.dontResetTimerOnDeath = {
+			cat: sc.OPTION_CATEGORY.GENERAL,
 			hasDivider: true,
-			header: 'ccTimer'
-		};
-							   // arg0 - name 
-		sc.OPTIONS_DEFINITION['printEvents'] = {
-			// arg1 - type
-			type: 'CHECKBOX',
-			// arg2 - init
-			init: false,
-			// arg3 - category
-			cat: 0,
-			// arg4 - data
-			// arg5 - restart
+			header: 'ccTimer',
+			init: true,
 			restart: true,
-			// arg6 - header
+			type: 'CHECKBOX',
 		};
+		sc.OPTIONS_DEFINITION.printEvents = {
+			cat: sc.OPTION_CATEGORY.GENERAL,
+			init: false,
+			restart: true,
+			type: 'CHECKBOX',
+		};
+		if (sc.options.values.dontResetTimerOnDeath == null) {
+			sc.options.values.dontResetTimerOnDeath = false;
+		}
 
-		this._hooks.hookStatsSet((val, stats) => {
+		Hook.statsSet((val, stats) => {
 			if(sc.options.get('dontResetTimerOnDeath') 
 				&& stats 
 				&& stats.player 
@@ -57,34 +41,30 @@ export class Utils {
 	 * @param {import('./connectionManager').ConnectionManager} connection
 	 */
 	updateTime(connection) {
-		ig.game.addons.postUpdate.push({
-				onPostUpdate() {
-				const t = sc.stats.getStat('player', 'playtime');
-				if(!t) {
-					return;
-				}
-					
-				connection.sendIgt(t);
+		Hook.update(() => {
+			const t = sc.stats.getMap('player', 'playtime');
+			if(!t) {
+				return;
 			}
 		});
 	}
 
 	printEvents() {
-		this._hooks.hookVarSet((path, value) => {
+		Hook.varSet((path, value) => {
 			if (sc.options.get('printEvents') && value !== ig.vars.get(path)) {
 				// eslint-disable-next-line no-console
 				console.log('event', path, '=', value);
 			}
 		});
 
-		this._hooks.hookLoadMap(() => {
+		Hook.loadMap(() => {
 			if (sc.options.get('printEvents')) {
 				// eslint-disable-next-line no-console
-				console.log('loadmap', 'Entered map', cc.ig.getMapName());
+				console.log('loadmap', 'Entered map', ig.game.mapName);
 			}
 		});
 
-		this._hooks.hookEnemyHP((name, hp) => {
+		Hook.enemyHP((name, hp) => {
 			if (sc.options.get('printEvents')) {
 				// eslint-disable-next-line no-console
 				console.log('damage', name, hp);

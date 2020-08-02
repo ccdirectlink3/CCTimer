@@ -1,3 +1,5 @@
+import { Hook } from './hooks.js';
+
 export class IngameDisplay {
 	initialize() {
 		const timer = this.timer = document.createElement('h1');
@@ -12,8 +14,7 @@ export class IngameDisplay {
 	}
 
 	run() {
-		// maybe use ig GameAddon depending on when this is called
-		ig.game.addons.postUpdate.push(this);
+		Hook.update(() => this._update());
 	}
 
 	onPostUpdate() {
