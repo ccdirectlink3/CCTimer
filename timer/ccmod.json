@@ -1,0 +1,12 @@
+{
+	"id": "timer",
+	"title": {
+		"en_US": "timer"
+	},
+	"main": "main.js",
+	"homepage": "https://github.com/CCDirectLink/CCTimer",
+	"description": {
+		"en_US": "A speedrun timer for CrossCode."
+	},
+	"version": "3.0.0"
+}
