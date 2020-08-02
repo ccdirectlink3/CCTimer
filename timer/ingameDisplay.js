@@ -12,7 +12,8 @@ export class IngameDisplay {
 	}
 
 	run() {
-		simplify.registerUpdate(() => this._update());
+		// maybe use ig GameAddon depending on when this is called
+		ig.game.addons.postUpdate.push(() => this._update());
 	}
 
 	_update() {

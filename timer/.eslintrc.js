@@ -17,7 +17,6 @@ module.exports = {
         "cc": true,
         "reloadTables": true,
         "entries": true,
-        "simplify": true,
         "$": true
     },
     "rules": {
