@@ -7,7 +7,6 @@ import { StateManager } from './stateManager.js';
 
 export default class CCTimer {
 	constructor(mod) {
-		super();
 		this.mod = mod;
 	}
     
