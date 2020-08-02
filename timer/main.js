@@ -5,13 +5,13 @@ import { EventManager } from './eventManager.js';
 import { Utils } from './utils.js';
 import { StateManager } from './stateManager.js';
 
-export default class CCTimer extends Plugin {
+export default class CCTimer {
 	constructor(mod) {
 		super();
 		this.mod = mod;
 	}
     
-	main() {
+	poststart() {
 		const utils = this.utils = new Utils();
 		utils.addOptions();
 		utils.printEvents();
