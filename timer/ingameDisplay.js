@@ -17,7 +17,7 @@ export class IngameDisplay {
 		Hook.update(() => this._update());
 	}
 
-	onPostUpdate() {
+	_update() {
 		const t = sc.stats.getMap('player', 'playtime');
 		if(!t) {
 			return this.timer.innerHTML  = '';
