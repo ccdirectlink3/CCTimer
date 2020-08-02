@@ -13,10 +13,10 @@ export class IngameDisplay {
 
 	run() {
 		// maybe use ig GameAddon depending on when this is called
-		ig.game.addons.postUpdate.push(() => this._update());
+		ig.game.addons.postUpdate.push(this);
 	}
 
-	_update() {
+	onPostUpdate() {
 		const t = sc.stats.getMap('player', 'playtime');
 		if(!t) {
 			return this.timer.innerHTML  = '';

@@ -57,13 +57,15 @@ export class Utils {
 	 * @param {import('./connectionManager').ConnectionManager} connection
 	 */
 	updateTime(connection) {
-		ig.game.addons.postUpdate.push(() => {
-			const t = cc.sc.stats.getStat('player', 'playtime');
-			if(!t) {
-				return;
+		ig.game.addons.postUpdate.push({
+				onPostUpdate() {
+				const t = sc.stats.getStat('player', 'playtime');
+				if(!t) {
+					return;
+				}
+					
+				connection.sendIgt(t);
 			}
-				
-			connection.sendIgt(t);
 		});
 	}
 

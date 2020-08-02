@@ -29,7 +29,7 @@ export class Hooks {
 
 	hookStatsSet(callback) {
 		let stats = sc.stats.values;
-		Object.defineProperty(cc.sc.stats, 'values', {
+		Object.defineProperty(sc.stats, 'values', {
 			get: () => stats,
 			set: val => {
 				stats = callback(val, stats) || val;
